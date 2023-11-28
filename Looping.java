@@ -4,6 +4,10 @@ public class Looping {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		long N = 0;
+		long R = 0;
+		int counter = 0;
+
 		if (args.length == 0) {
 			System.out.println("Bitte geben Sie die Obergrenze als Parameter an.");
 			System.exit(0);
@@ -32,15 +36,23 @@ public class Looping {
 
 		}
 
-		long N = 0;
-		long R = 0;
-		int counter = 0;
 		int max = Integer.parseInt(n);
 
 		N = counter;
 		R = back(Integer.toString(counter));
 
 		while (counter < max) {
+
+			if ((R + N) < 0) {
+
+				System.out.println(counter);
+
+				counter++;
+
+				N = counter;
+				R = back(Long.toString(N));
+
+			}
 
 			N = (R + N);
 			n = Long.toString(N);
@@ -54,22 +66,7 @@ public class Looping {
 
 			} else {
 
-				if ((R + N) > 0) {
-
-					R = back(Long.toString(N));
-
-				}
-
-			}
-
-			if ((R + N) < N) {
-
-				System.out.println(counter);
-
-				counter++;
-
-				N = counter;
-				R = back(Integer.toString(counter));
+				R = back(Long.toString(N));
 
 			}
 
@@ -81,7 +78,7 @@ public class Looping {
 
 		String r = "";
 
-		double R = 0;
+		double R = 0;				//das muss ein double sein, da wenn es ein long ist, kommt es nicht wie in der aufgabenstellung beim addieren von N und R zum überlauf, sondern beim umdrehen von N
 		char n1;
 
 		for (int i = 1; i < n.length() + 1; i++) {
@@ -92,7 +89,7 @@ public class Looping {
 
 		}
 
-		R = Double.parseDouble(r);
+		R = Double.parseDouble(r);	
 		return (long) R;
 
 	}
