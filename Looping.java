@@ -1,16 +1,26 @@
+import java.math.BigInteger;
 
 public class Looping {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		long N = 0;
-		long R = 0;
+		boolean x = false;
+		boolean ueberlauf = false;
+		int iterationen = 0;
+
+		BigInteger N;
+
+		BigInteger R = new BigInteger("0");
+
+		BigInteger MAX_VALUE_LONG = BigInteger.valueOf(Long.MAX_VALUE);
+
 		int counter = 0;
 
 		if (args.length == 0) {
 			System.out.println("Bitte geben Sie die Obergrenze als Parameter an.");
 			System.exit(0);
+
 		}
 
 		String n = args[0];
@@ -36,49 +46,85 @@ public class Looping {
 
 		}
 
+		if (args.length == 2) {
+
+			if (args[1].charAt(0) == 'x') {
+
+				x = true;
+
+			} else {
+
+				System.out.println("Falsche zweite eingabe");
+
+				System.exit(0);
+			}
+		}
+
 		int max = Integer.parseInt(n);
 
-		N = counter;
-		R = back(Integer.toString(counter));
+		N = new BigInteger(Integer.toString(counter));
+
+		R = new BigInteger(back((Long.toString(counter))));
 
 		while (counter < max) {
 
-			if ((R + N) < 0) {
+			if ((R.add(N)).compareTo(MAX_VALUE_LONG) > 0) {
 
-				System.out.println(counter);
+				if (!x) {
+
+					System.out.println(counter);
+
+				} else {
+
+					ueberlauf = extra(N, iterationen, counter);
+
+				}
 
 				counter++;
+				iterationen = 0;
 
-				N = counter;
-				R = back(Long.toString(N));
+				N = new BigInteger(Integer.toString(counter));
+
+				R = new BigInteger(back((N.toString())));
 
 			}
 
-			N = (R + N);
-			n = Long.toString(N);
+			// N = (R + N);
+			N = R.add(N);
+
+			// n = Long.toString(N);
+			n = N.toString();
 
 			if (palindrome(n) == true) {
 
 				counter++;
 
-				N = counter;
-				R = back(Long.toString(N));
+				N = new BigInteger(Integer.toString(counter));
+
+				R = new BigInteger(back((N.toString())));
 
 			} else {
 
-				R = back(Long.toString(N));
+				R = new BigInteger(back((N.toString())));
 
 			}
+
+			iterationen++;
+
+		}
+
+		if (ueberlauf) {
+
+			System.out.println("alle Zahlen werden auch durch Abbruch per Ueberlauf gefunden");
 
 		}
 
 	}
 
-	public static long back(String n) {
+	public static String back(String n) {
 
 		String r = "";
 
-		double R = 0;				//das muss ein double sein, da wenn es ein long ist, kommt es nicht wie in der aufgabenstellung beim addieren von N und R zum überlauf, sondern beim umdrehen von N
 		char n1;
 
 		for (int i = 1; i < n.length() + 1; i++) {
@@ -89,8 +135,7 @@ public class Looping {
 
 		}
 
-		R = Double.parseDouble(r);	
-		return (long) R;
+		return r;
 
 	}
 
@@ -114,6 +159,46 @@ public class Looping {
 		}
 
 		return pali;
+	}
+
+	public static boolean extra(BigInteger N, int iterationen, int counter) {
+		int itterations = iterationen;
+		
+		String n = "";
+
+		BigInteger Nplus = N;
+		BigInteger Rplus = new BigInteger(back((Nplus.toString())));
+
+		if (itterations > 100) {
+
+		} else {
+
+			while (itterations < 100) {
+
+				Nplus = Rplus.add(Nplus);
+
+				n = Nplus.toString();
+
+				if (palindrome(n) == true) {
+
+					System.out.println(counter + " braucht " + itterations + " Iterationen bis zum Palindrom " + n);
+					System.exit(0);
+
+				} else {
+
+					Nplus = Rplus.add(Nplus);
+					Rplus = new BigInteger(back((Nplus.toString())));
+
+					itterations++;
+
+				}
+
+			}
+
+		}
+
+		return true;
+
 	}
 
 }
