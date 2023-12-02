@@ -169,13 +169,14 @@ public class Looping {
 		BigInteger Nplus = N;
 		BigInteger Rplus = new BigInteger(back((Nplus.toString())));
 
+		Nplus = Rplus.add(Nplus);
+
 		if (itterations > 100) {
 
 		} else {
 
 			while (itterations < 100) {
 
-				Nplus = Rplus.add(Nplus);
 
 				n = Nplus.toString();
 
